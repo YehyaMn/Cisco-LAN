@@ -36,14 +36,17 @@ Conclusion
 
 In this guide, we will walk through the process of configuring IP phone registration on a Cisco router using SCCP protocol in Cisco Packet Tracer. The setup involves configuring VLANs, DHCP, telephony services, and IP phones. It also includes troubleshooting common issues such as phones being stuck at "Configuring CM List" or "Configuring IP".
 
-Prerequisites
+**Prerequisites**
+------------------------------------
 Before starting, ensure that you have the following:
 
 Cisco Packet Tracer (version 7.x or higher) make sure to use firewall to block unnecessary sign in and interruptions(Free packet tracer)
 Basic understanding of networking (VLANs, IP addressing, DHCP, etc.)
 A Cisco router and IP Phones added to the Packet Tracer workspace
 A DHCP server (or router configured as DHCP) to assign IP addresses
-Step-by-Step Configuration
+
+**Step-by-Step Configuration**
+------------------------------------------
 Step 1: Setting Up VLANs
 Create Voice VLAN (VLAN 100):
 
