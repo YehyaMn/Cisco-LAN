@@ -47,88 +47,93 @@ A DHCP server (or router configured as DHCP) to assign IP addresses
 
 **Step-by-Step Configuration**
 ------------------------------------------
-Step 1: Setting Up VLANs
-Create Voice VLAN (VLAN 100):
+Step 1: Setting Up VLANs on Switch0
 
-Open the router and configure the Voice VLAN (VLAN 100).
-Make sure that the VLAN is configured on both the router and the switch (if applicable).
-Example on the router:
+I did the VLANs as follows:
 
-bash
-Copy code
 Router(config)# vlan 100
 Router(config-vlan)# name Voice
-Assign VLANs to Switch Ports:
+
+Router(config)# vlan 2
+Router(config-vlan)# name Servers
+
+Router(config)# vlan 3
+Router(config-vlan)# name Sales
+
+Router(config)# vlan 4
+Router(config-vlan)# name IT
+
+Router(config)# vlan 100
+Router(config-vlan)# name Voice
+
+interface FastEthernet0/1
+ switchport mode trunk
+!
+interface FastEthernet0/2
+ switchport access vlan 4
+ switchport mode access
+ switchport voice vlan 100
+!
+interface FastEthernet0/3
+ switchport access vlan 4
+ switchport mode access
+!
+
+
+Open the router and configure the Voice VLAN (VLAN 100).
+Make sure that the VLAN is configured on both the router and the switch
+
 
 Configure the switch ports where the phones will be connected to ensure they are in the correct access VLAN and voice VLAN.
 Example on the switch:
 
-bash
-Copy code
+
 Switch(config)# interface range fa0/1 - 2   # Adjust according to your ports
 Switch(config-if-range)# switchport mode access
-Switch(config-if-range)# switchport access vlan 100  # Voice VLAN
+Switch(config-if-range)# switchport access vlan 4  # Data VLAN
 Switch(config-if-range)# switchport voice vlan 100
-Step 2: Configure DHCP for Voice VLAN
+
+**Step 2: Configure DHCP for Voice VLAN**
+-------------------------------------------------------
 Configure DHCP Server:
 
-Set up a DHCP pool for the Voice VLAN with a TFTP server address pointing to the router's IP.
-Example on the router:
+Set up a DHCP pool for the Voice VLAN with a TFTP server address pointing to the router's IP 172.16.0.1/16.
 
-bash
-Copy code
-Router(config)# ip dhcp pool Voice_Pool
-Router(config-dhcp)# network 192.168.100.0 255.255.255.0
-Router(config-dhcp)# default-router 192.168.100.1
-Router(config-dhcp)# option 150 ip 192.168.100.1   # TFTP server IP
-Configure Lease Time:
-
-Adjust the DHCP lease time to ensure it is long enough (e.g., 24 hours).
-bash
-Copy code
-Router(config-dhcp)# lease 0 24 0  # 24 hours lease
-Step 3: Configure Telephony Service on the Router
+**Step 3: Configure Telephony Service on the Router**
+---------------------------------------------------------------------
 Enable Telephony Service:
 
 On the router, configure the telephony service and specify the max ephones and max directory numbers.
-Example on the router:
 
-bash
-Copy code
+Example on the Telephony router:
+
 Router(config)# telephony-service
-Router(config-telephony)# max-ephones 5
-Router(config-telephony)# max-dn 5
-Router(config-telephony)# ip source-address 192.168.100.1  # Router's IP in the Voice VLAN
-Verify Telephony Configuration:
+Router(config-telephony)# max-ephones 2
+Router(config-telephony)# max-dn 2
+Router(config-telephony)# ip source-address 172.16.0.1  # Router's IP in the Voice VLAN
 
-Verify that the router is configured to handle telephony services and the IP phones are ready to register.
-bash
-Copy code
-Router# show telephony-service
-Step 4: Configure IP Phones
+**Telephony Configuration:**
+---------------------------------
+
 Assign Extensions:
-On the IP phones, configure Directory Numbers (DNs) to define their extensions.
-Example on Packet Tracer:
-Click on the phone, go to the Settings tab, and assign a DN (e.g., 1000, 1001, etc.).
-Verify Phone Registration:
-Once connected to the network, the phone should attempt to register with the router. Check the router logs or telephony-service status to verify successful registration.
-Step 5: Troubleshooting IP Phone Registration
-Phone Stuck on "Configuring IP" or "Configuring CM List":
 
-Ensure the TFTP server is properly configured in the DHCP pool (Option 150).
-Verify the VLAN configuration on both the switch and the router.
-Ensure the DHCP lease time is sufficient, and check if IP conflicts are causing issues.
-Registration Issues (e.g., "Phone-Reg-Rej"):
+To assign extensions to IP phones (called ephones) and map them to a MAC address on a Cisco router, you will use the telephony-service configuration in Packet Tracer. Router 2811 has this feature
 
-Verify the phone's extension is unique.
-Ensure the telephony service on the router is correctly configured (max-ephones, max-dn).
-Check the phone’s MAC address is correctly mapped and no conflicts exist in the DHCP binding table.
-DHCP Issues:
+Here’s a step-by-step guide for assigning extensions to IP phones and associating them with MAC addresses.
 
-Verify the DHCP server is providing the correct IP addresses to the phones.
-Check the router's IP address in the Voice VLAN and confirm connectivity.
-Unregistering IP Phones
-To unregister an IP phone, use the following steps:
+Steps for Assigning Extensions to IP Phones (ephones)
+
+Router(config-telephony)# ephone 1
+Router(config-ephone)# mac-address xxxx.xxxx.xxxx  # Replace with the MAC address of the first IP phone
+Router(config-ephone)# button 1:1 # Assign extension 1000 to the first phone
+
+Router(config-telephony)# ephone 2
+Router(config-ephone)# mac-address xxxx.xxxx.xxxx  # Replace with the MAC address of the second IP phone
+Router(config-ephone)# button 1:2
+
+
+
+
 
 Remove the Phone from the Network:
 
@@ -137,8 +142,7 @@ This will reset the phone and cause it to request a new IP address.
 Unregister Using CLI (Real Cisco Devices):
 
 On real devices, you can use the following command to unregister a phone from the router:
-bash
-Copy code
+
 Router(config)# no ephone 1   # Replace '1' with the phone's ephone number
 Additional Notes
 Packet Tracer may have limitations on telephony services and might not support all the commands and features available in a real Cisco environment.
