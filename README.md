@@ -97,7 +97,9 @@ You can create a miscellaneous VLAN for security reasons, and assign range of un
 -------------------------------------------------------
 Configure DHCP Server:
 
-Set up a DHCP pool for the Voice VLAN with a TFTP server address pointing to the router's IP 172.16.0.1/16.
+Set up a DHCP pool for the Voice VLAN with a TFTP server address pointing to the router's IP 172.16.0.1/16 as shown below:
+
+![Screenshot 2024-12-19 144004](https://github.com/user-attachments/assets/dcd77269-c25e-4ec7-b349-5138a10bfc9b)
 
 **Step 3: Configure Telephony Service on the Router**
 ---------------------------------------------------------------------
@@ -111,6 +113,7 @@ Router(config)# telephony-service
 Router(config-telephony)# max-ephones 2
 Router(config-telephony)# max-dn 2
 Router(config-telephony)# ip source-address 172.16.0.1  # Router's IP in the Voice VLAN
+
 
 **Telephony Configuration:**
 ---------------------------------
