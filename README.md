@@ -24,8 +24,6 @@ Step 4: Configure IP Phones
 
 Step 5: Troubleshooting IP Phone Registration
 
-Unregistering IP Phones
-
 Additional Notes
 
 Conclusion
@@ -34,13 +32,13 @@ Conclusion
 **Introduction**
 -----------------------
 
-In this guide, we will walk through the process of configuring IP phone registration on a Cisco router using SCCP protocol in Cisco Packet Tracer. The setup involves configuring VLANs, DHCP, telephony services, and IP phones. It also includes troubleshooting common issues such as phones being stuck at "Configuring CM List" or "Configuring IP".
+In this guide, we will walk through the process of configuring IP phone registration on a Cisco router using CLI. The setup involves configuring VLANs, DHCP server and scopes, telephony services, and IP phones, Trunk ports, Access ports, Sub-intefaces. It also includes troubleshooting common issues such as phones being stuck at "Configuring CM List" or "Configuring IP".
 
 **Prerequisites**
 ------------------------------------
 Before starting, ensure that you have the following:
 
-Cisco Packet Tracer (version 7.x or higher) make sure to use firewall to block unnecessary sign in and interruptions(Free packet tracer)
+Cisco Packet Tracer (version 7.x or higher) make sure to use firewall to block unnecessary sign in and interruptions(Anonymous study)
 Basic understanding of networking (VLANs, IP addressing, DHCP, etc.)
 A Cisco router and IP Phones added to the Packet Tracer workspace
 A DHCP server (or router configured as DHCP) to assign IP addresses
@@ -52,7 +50,7 @@ Step 1: Setting Up VLANs on Switch0
 I did the VLANs as follows:
 
 Router(config)# vlan 100
-Router(config-vlan)# name Voice
+Router(config-vlan)# name VOIP
 
 Router(config)# vlan 2
 Router(config-vlan)# name Servers
@@ -81,7 +79,7 @@ interface FastEthernet0/3
 
 
 Open the router and configure the Voice VLAN (VLAN 100).
-Make sure that the VLAN is configured on both the router and the switch
+Make sure that the VLANs are configured on both the router and the switchs
 
 
 Configure the switch ports where the phones will be connected to ensure they are in the correct access VLAN and voice VLAN.
@@ -90,8 +88,10 @@ Example on the switch:
 
 Switch(config)# interface range fa0/1 - 2   # Adjust according to your ports
 Switch(config-if-range)# switchport mode access
-Switch(config-if-range)# switchport access vlan 4  # Data VLAN
+Switch(config-if-range)# switchport access vlan 4  # Data VLAN for IT team, adjust according to your network
 Switch(config-if-range)# switchport voice vlan 100
+
+You can create a miscellaneous VLAN for security reasons, and assign range of unused ports, then shut them down
 
 **Step 2: Configure DHCP for Voice VLAN**
 -------------------------------------------------------
