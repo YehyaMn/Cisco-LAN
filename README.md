@@ -1,7 +1,7 @@
 **Cisco Packet Tracer IP Phone Registration Guide**
 -------------------------------------------------------------
 
-This repository contains a guide for setting up and troubleshooting IP Phone Registration with Telephony Services on a Cisco Router using Cisco Packet Tracer. The guide includes steps for configuring VLANs, DHCP, telephony services, and troubleshooting common registration issues.
+This repository contains a guide for setting up DCHP server that transmit DHCP request based on VLANs and IP Phone Registration with Telephony Services on a Cisco Router using Cisco Packet Tracer. The guide includes steps for configuring Data and voice VLANs, DHCP server, routing, and telephony services.
 
 ![Packet Tracer](https://github.com/user-attachments/assets/e34ef378-4c04-4022-a2d8-8dc37b199d8b)
 
@@ -45,9 +45,10 @@ A DHCP server (or router configured as DHCP) to assign IP addresses
 
 **Step-by-Step Configuration**
 ------------------------------------------
-Step 1: Setting Up VLANs on Switch0
+**Step 1: Setting Up VLANs on Switch and Routers
+**
 
-I did the VLANs as follows:
+configure the VLANs as follows:
 
 Router(config)# vlan 100
 Router(config-vlan)# name VOIP
@@ -77,14 +78,9 @@ interface FastEthernet0/3
  switchport mode access
 !
 
-
-Open the router and configure the Voice VLAN (VLAN 100).
-Make sure that the VLANs are configured on both the router and the switchs
-
-
-Configure the switch ports where the phones will be connected to ensure they are in the correct access VLAN and voice VLAN.
-Example on the switch:
-
+**Configure the switch ports where the phones will be connected
+**
+----------------------------------------------------
 
 Switch(config)# interface range fa0/1 - 2   # Adjust according to your ports
 
@@ -96,9 +92,33 @@ Switch(config-if-range)# switchport voice vlan 100
 
 You can create a miscellaneous VLAN for security reasons, and assign range of unused ports, then shut them down
 
-**Step 2: Configure DHCP for Voice VLAN**
+
+
+Open the router and configure the Voice VLAN (VLAN 100) and subinterfaces:
+Make sure that the VLANs are configured on both the router and the switchs
+
+interface GigabitEthernet0/0/0.100
+ no encapsulation dot1Q 100
+ no ip address 192.168.100.254 255.255.255.0
+ no ip helper-address 192.168.2.100
+
+interface GigabitEthernet0/0/0.2
+ no encapsulation dot1Q 2
+ no ip address 192.168.2.254 255.255.255.0
+ no ip helper-address 192.168.2.100
+
+interface GigabitEthernet0/0/0.3
+ no encapsulation dot1Q 3
+ no ip address 192.168.3.254 255.255.255.0
+ no ip helper-address 192.168.2.100
+
+no ip helper-address command infoms the subnet about the DHCP server relay
+
+
+
+**Step 2: Configure interface on telephony server **
 -------------------------------------------------------
-Configure DHCP Server:
+Configure telephony server with an ip of your preference, in my case I used 172.16.0.1/16 and added a static route on the main router.
 
 Set up a DHCP pool for the Voice VLAN with a TFTP server address pointing to the router's IP 172.16.0.1/16 as shown below:
 
@@ -136,7 +156,6 @@ Router(config-ephone)# button 1:1 # Assign extension 1000 to the first phone
 Router(config-telephony)# ephone 2
 Router(config-ephone)# mac-address xxxx.xxxx.xxxx  # Replace with the MAC address of the second IP phone
 Router(config-ephone)# button 1:2
-
 
 
 Remove the Phone from the Network:
