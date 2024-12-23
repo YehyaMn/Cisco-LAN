@@ -87,8 +87,11 @@ Example on the switch:
 
 
 Switch(config)# interface range fa0/1 - 2   # Adjust according to your ports
+
 Switch(config-if-range)# switchport mode access
+
 Switch(config-if-range)# switchport access vlan 4  # Data VLAN for IT team, adjust according to your network
+
 Switch(config-if-range)# switchport voice vlan 100
 
 You can create a miscellaneous VLAN for security reasons, and assign range of unused ports, then shut them down
