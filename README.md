@@ -97,20 +97,32 @@ You can create a miscellaneous VLAN for security reasons, and assign range of un
 Open the router and configure the Voice VLAN (VLAN 100) and subinterfaces:
 Make sure that the VLANs are configured on both the router and the switchs
 
-interface GigabitEthernet0/0/0.100
+ interface GigabitEthernet0/0/0.100
+
  no encapsulation dot1Q 100
+
  no ip address 192.168.100.254 255.255.255.0
+ 
  no ip helper-address 192.168.2.100
+
 
 interface GigabitEthernet0/0/0.2
+
  no encapsulation dot1Q 2
+ 
  no ip address 192.168.2.254 255.255.255.0
+ 
  no ip helper-address 192.168.2.100
+ 
 
 interface GigabitEthernet0/0/0.3
+
  no encapsulation dot1Q 3
+ 
  no ip address 192.168.3.254 255.255.255.0
+ 
  no ip helper-address 192.168.2.100
+ 
 
 no ip helper-address command infoms the subnet about the DHCP server relay
 
@@ -133,8 +145,11 @@ On the router, configure the telephony service and specify the max ephones and m
 Example on the Telephony router:
 
 Router(config)# telephony-service
+
 Router(config-telephony)# max-ephones 2
+
 Router(config-telephony)# max-dn 2
+
 Router(config-telephony)# ip source-address 172.16.0.1  # Router's IP in the Voice VLAN
 
 
