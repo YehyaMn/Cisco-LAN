@@ -136,9 +136,8 @@ Router(config-ephone)# button 1:2
 
 
 
-
-
 Remove the Phone from the Network:
+-------------------------------------
 
 In Packet Tracer, simply remove the IP phone from the workspace and reconnect it.
 This will reset the phone and cause it to request a new IP address.
@@ -147,6 +146,4 @@ Unregister Using CLI (Real Cisco Devices):
 On real devices, you can use the following command to unregister a phone from the router:
 
 Router(config)# no ephone 1   # Replace '1' with the phone's ephone number
-Additional Notes
-Packet Tracer may have limitations on telephony services and might not support all the commands and features available in a real Cisco environment.
-Make sure VLANs are correctly configured across all devices in the network to ensure proper communication between the router and IP phones.
+
