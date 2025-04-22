@@ -38,7 +38,7 @@ In this guide, we will walk through the process of configuring IP phone registra
 ------------------------------------
 Before starting, ensure that you have the following:
 
-Cisco Packet Tracer (version 7.x or higher) make sure to use firewall to block unnecessary sign in and interruptions(Anonymous study)
+Cisco Packet Tracer (version 7.x or higher) make sure to use firewall to block unnecessary sign in and interruptions(A nymous study)
 Basic understanding of networking (VLANs, IP addressing, DHCP, etc.)
 A Cisco router and IP Phones added to the Packet Tracer workspace
 A DHCP server (or router configured as DHCP) to assign IP addresses
@@ -99,32 +99,32 @@ Make sure that the VLANs are configured on both the router and the switchs
 
  interface GigabitEthernet0/0/0.100
 
- no encapsulation dot1Q 100
+   encapsulation dot1Q 100
 
- no ip address 192.168.100.254 255.255.255.0
+ ip address 192.168.100.254 255.255.255.0
  
- no ip helper-address 192.168.2.100
+ ip helper-address 192.168.2.100
 
 
 interface GigabitEthernet0/0/0.2
 
- no encapsulation dot1Q 2
+   encapsulation dot1Q 2
  
- no ip address 192.168.2.254 255.255.255.0
+   ip address 192.168.2.254 255.255.255.0
  
- no ip helper-address 192.168.2.100
+   ip helper-address 192.168.2.100
  
 
 interface GigabitEthernet0/0/0.3
 
- no encapsulation dot1Q 3
+   encapsulation dot1Q 3
  
- no ip address 192.168.3.254 255.255.255.0
+   ip address 192.168.3.254 255.255.255.0
  
- no ip helper-address 192.168.2.100
+   ip helper-address 192.168.2.100
  
 
-no ip helper-address command infoms the subnet about the DHCP server relay
+  ip helper-address command infoms the subnet about the DHCP server relay
 
 
 
@@ -182,5 +182,5 @@ Unregister Using CLI (Real Cisco Devices):
 
 On real devices, you can use the following command to unregister a phone from the router:
 
-Router(config)# no ephone 1   # Replace '1' with the phone's ephone number
+Router(config)#   ephone 1   # Replace '1' with the phone's ephone number
 
